@@ -1,0 +1,16 @@
+# This will simply remove the version of the motd in Minecraft, e.g. "Your server - 1.20.50", it will now be "Your Server".
+clean-motd: true
+
+# This removes the need to display ip addresses when a player connects to the server, so you don't have to store players' ip addresses in your server logs.
+remove-console-ips: true
+
+# This allows you to deactivate the kick when you remain pressed for a long time on the right click, or other action.
+# This bug is caused by minecraft, but for all that, it's quite annoying to be kicked all the time.
+disable-packetLimiter-kick: true
+
+# This message will be displayed when an error is produced by the server but comes from a packet, so any form of crash exploit or other won't work. The error will be displayed in the console but nothing more.
+# Note that this only works with player actions, e.g. a command, a right-click on a block or similar.
+# Any error caused by your code but without direct interaction with a player, the server will still stop!
+crash:
+  type: "kick" # available "kick", "message"
+  message: "§cAn error has occurred on the server side, if this continues please ask our team for assistance."
