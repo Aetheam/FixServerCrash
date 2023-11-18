@@ -3,7 +3,6 @@
 namespace Zwuiix\FixServerCrash\listener;
 
 use pocketmine\event\EventPriority;
-use pocketmine\event\Listener;
 use pocketmine\event\server\NetworkInterfaceRegisterEvent;
 use pocketmine\network\mcpe\raklib\RakLibInterface;
 use pocketmine\network\query\DedicatedQueryNetworkInterface;
@@ -13,7 +12,7 @@ use Zwuiix\FixServerCrash\libs\SenseiTarzan\ExtraEvent\Class\EventAttribute;
 use Zwuiix\FixServerCrash\network\CustomRakLibInterface;
 use Zwuiix\FixServerCrash\utils\ReflectionUtils;
 
-class ServerListener implements Listener
+class ServerListener
 {
     /**
      * @param NetworkInterfaceRegisterEvent $event
