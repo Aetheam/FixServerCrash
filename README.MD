@@ -7,7 +7,7 @@ This plugin overwrites the RakLibInterface of **PocketMine-MP**, adding several 
 
 ## Features
 
-- Clean motd (Removes the motd version, so there's no longer the "- 1.20.50")
+- Clean motd (Removes the motd version, so there's no longer the "- 1.20.60")
 - Remove console ips (This removes the need to display a client's ip address when it connects)
 - Disable PacketLimiter Kick (This avoids getting kicked for "Packet Processing Error" all the time)
 - AntiCrash (When the server gets an error from a packet handle, so anything closely related to the player won't crash)
