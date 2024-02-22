@@ -1,4 +1,4 @@
-# This will simply remove the version of the motd in Minecraft, e.g. "Your server - 1.20.50", it will now be "Your Server".
+# This will simply remove the version of the motd in Minecraft, e.g. "Your server - 1.20.60", it will now be "Your Server".
 clean-motd: true
 
 # This removes the need to display ip addresses when a player connects to the server, so you don't have to store players' ip addresses in your server logs.
