@@ -189,7 +189,6 @@ class CustomNetworkSession extends NetworkSession
                 $stream = new BinaryStream($decompressed);
                 $count = 0;
                 foreach(PacketBatch::decodeRaw($stream) as $buffer){
-                    ReflectionUtils::getProperty(NetworkSession::class, $this, "gamePacketLimiter")->decrement();
                     if(++$count > 100){
                         throw new PacketHandlingException("Too many packets in batch");
                     }
