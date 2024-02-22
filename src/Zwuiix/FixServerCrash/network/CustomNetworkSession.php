@@ -10,6 +10,7 @@ use pocketmine\network\mcpe\InventoryManager;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\PacketDecodeException;
 use pocketmine\network\mcpe\protocol\serializer\PacketBatch;
+use pocketmine\network\mcpe\protocol\types\CompressionAlgorithm;
 use pocketmine\network\PacketHandlingException;
 use pocketmine\player\Player;
 use pocketmine\timings\Timings;
@@ -130,9 +131,7 @@ class CustomNetworkSession extends NetworkSession
     }
 
     /**
-     * @param string $payload
-     * @return void
-     * @throws ReflectionException
+     * @throws PacketHandlingException
      */
     public function handleEncoded(string $payload) : void{
         if(!FixServerCrash::getInstance()->getCache()[FixServerCrash::DISABLE_PACKETLIMITER]) {
@@ -147,10 +146,11 @@ class CustomNetworkSession extends NetworkSession
         Timings::$playerNetworkReceive->startTiming();
         try{
             ReflectionUtils::getProperty(NetworkSession::class, $this, "packetBatchLimiter")->decrement();
-            if(($cipher = ReflectionUtils::getProperty(NetworkSession::class, $this, "cipher")) !== null){
+
+            if(ReflectionUtils::getProperty(NetworkSession::class, $this, "cipher") !== null){
                 Timings::$playerNetworkReceiveDecrypt->startTiming();
                 try{
-                    $payload = $cipher->decrypt($payload);
+                    $payload = ReflectionUtils::getProperty(NetworkSession::class, $this, "cipher")->decrypt($payload);
                 }catch(DecryptionException $e){
                     ReflectionUtils::getProperty(NetworkSession::class, $this, "logger")->debug("Encrypted packet: " . base64_encode($payload));
                     throw PacketHandlingException::wrap($e, "Packet decryption error");
@@ -159,15 +159,27 @@ class CustomNetworkSession extends NetworkSession
                 }
             }
 
+            if(strlen($payload) < 1){
+                throw new PacketHandlingException("No bytes in payload");
+            }
+
             if(ReflectionUtils::getProperty(NetworkSession::class, $this, "enableCompression")){
                 Timings::$playerNetworkReceiveDecompress->startTiming();
-                try{
-                    $decompressed = ReflectionUtils::getProperty(NetworkSession::class, $this, "compressor")->decompress($payload);
-                }catch(DecompressionException $e){
-                    ReflectionUtils::getProperty(NetworkSession::class, $this, "logger")->debug("Failed to decompress packet: " . base64_encode($payload));
-                    throw PacketHandlingException::wrap($e, "Compressed packet batch decode error");
-                }finally{
-                    Timings::$playerNetworkReceiveDecompress->stopTiming();
+                $compressionType = ord($payload[0]);
+                $compressed = substr($payload, 1);
+                if($compressionType === CompressionAlgorithm::NONE){
+                    $decompressed = $compressed;
+                }elseif($compressionType === ReflectionUtils::getProperty(NetworkSession::class, $this, "compressor")->getNetworkId()){
+                    try{
+                        $decompressed = ReflectionUtils::getProperty(NetworkSession::class, $this, "compressor")->decompress($compressed);
+                    }catch(DecompressionException $e){
+                        ReflectionUtils::getProperty(NetworkSession::class, $this, "logger")->debug("Failed to decompress packet: " . base64_encode($compressed));
+                        throw PacketHandlingException::wrap($e, "Compressed packet batch decode error");
+                    }finally{
+                        Timings::$playerNetworkReceiveDecompress->stopTiming();
+                    }
+                }else{
+                    throw new PacketHandlingException("Packet compressed with unexpected compression type $compressionType");
                 }
             }else{
                 $decompressed = $payload;
@@ -177,7 +189,7 @@ class CustomNetworkSession extends NetworkSession
                 $stream = new BinaryStream($decompressed);
                 $count = 0;
                 foreach(PacketBatch::decodeRaw($stream) as $buffer){
-                    //$this->gamePacketLimiter->decrement(); disable this
+                    ReflectionUtils::getProperty(NetworkSession::class, $this, "gamePacketLimiter")->decrement();
                     if(++$count > 100){
                         throw new PacketHandlingException("Too many packets in batch");
                     }
