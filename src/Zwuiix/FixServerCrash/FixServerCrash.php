@@ -13,7 +13,7 @@ class FixServerCrash extends PluginBase
 {
     use SingletonTrait;
 
-    const MINIMUM_API_VERSION = "5.11.0";
+    const MINIMUM_API_VERSION = "5.13.0";
     const CLEAN_MOTD = "cleanMotd";
     const REMOVE_IPS = "removeIps";
     const DISABLE_PACKETLIMITER = "disablePacketLimiter";

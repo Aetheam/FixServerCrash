@@ -9,7 +9,6 @@ use pocketmine\network\mcpe\EntityEventBroadcaster;
 use pocketmine\network\mcpe\PacketBroadcaster;
 use pocketmine\network\mcpe\protocol\PacketPool;
 use pocketmine\network\mcpe\protocol\ProtocolInfo;
-use pocketmine\network\mcpe\protocol\serializer\PacketSerializerContext;
 use pocketmine\network\mcpe\raklib\RakLibInterface;
 use pocketmine\network\mcpe\raklib\RakLibPacketSender;
 use pocketmine\network\PacketHandlingException;
@@ -33,10 +32,9 @@ class CustomRakLibInterface extends RakLibInterface
         bool $ipV6,
         protected PacketBroadcaster $packetBroadcaster,
         protected EntityEventBroadcaster $entityEventBroadcaster,
-        protected PacketSerializerContext $packetSerializerContext,
         protected TypeConverter $typeConverter
     ) {
-        parent::__construct($server, $ip, $port, $ipV6, $packetBroadcaster, $entityEventBroadcaster, $packetSerializerContext, $typeConverter);
+        parent::__construct($server, $ip, $port, $ipV6, $packetBroadcaster, $entityEventBroadcaster, $typeConverter);
     }
 
     /**
@@ -141,7 +139,6 @@ class CustomRakLibInterface extends RakLibInterface
             $this->server,
             $network->getSessionManager(),
             PacketPool::getInstance(),
-            $this->packetSerializerContext,
             new RakLibPacketSender($sessionId, $this),
             $this->packetBroadcaster,
             $this->entityEventBroadcaster,

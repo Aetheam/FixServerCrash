@@ -31,7 +31,6 @@ class ServerListener
             $newInterface = new CustomRakLibInterface($server, $server->getIp(), $server->getPort(), false,
                 ReflectionUtils::getProperty(RakLibInterface::class, $interface, "packetBroadcaster"),
                 ReflectionUtils::getProperty(RakLibInterface::class, $interface, "entityEventBroadcaster"),
-                ReflectionUtils::getProperty(RakLibInterface::class, $interface, "packetSerializerContext"),
                 ReflectionUtils::getProperty(RakLibInterface::class, $interface, "typeConverter"),
             );
             $server->getNetwork()->registerInterface($newInterface);
