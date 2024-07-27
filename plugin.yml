@@ -1,7 +1,7 @@
 name: FixServerCrash
 version: 1.0.1
-api: 5.13.0
-mcpe-protocol: 671
+api: 5.17.0
+mcpe-protocol: 686
 main: Zwuiix\FixServerCrash\FixServerCrash
 authors:
   - Zwuiix
