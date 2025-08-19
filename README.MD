@@ -3,6 +3,10 @@
 </div>
 
 # FixServerCrash
+
+⚠️ **Deprecated:** This plugin is no longer maintained.  
+For a similar but improved plugin, check out [PrismError](https://github.com/PrismStudioMC/PrismError).
+
 This plugin overwrites the RakLibInterface of **PocketMine-MP**, adding several new functions.
 
 ## Features
@@ -11,6 +15,7 @@ This plugin overwrites the RakLibInterface of **PocketMine-MP**, adding several 
 - Remove console ips (This removes the need to display a client's ip address when it connects)
 - Disable PacketLimiter Kick (This avoids getting kicked for "Packet Processing Error" all the time)
 - AntiCrash (When the server gets an error from a packet handle, so anything closely related to the player won't crash)
+
 ## Configurations
 
 | Parameter                    | Type   | Status       | Default |
@@ -29,7 +34,5 @@ This plugin overwrites the RakLibInterface of **PocketMine-MP**, adding several 
 ## Support
 For advanced support, please contact Aetheam support: https://discord.gg/KtBYQ5X5dW
 
-
 ## Authors
 - [@Zwuiix-cmd](https://www.github.com/Zwuiix-cmd)
-
